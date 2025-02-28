@@ -53,6 +53,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            position: absolute;
+            right: 10%;
         }
         .transactions {
             margin-top: 30px;
@@ -62,6 +64,21 @@
         }
         .hidden {
             display: none;
+        }
+        .dashboard {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+        }
+        .left-panel {
+            text-align: left;
+        }
+        .right-panel {
+            text-align: right;
+        }
+        .form-container {
+            margin-top: 50px;
+            text-align: center;
         }
     </style>
 </head>
@@ -85,9 +102,14 @@
         </div>
 
         <div id="dashboard" class="hidden">
-            <div class="money-display" id="money">$0.00 CAD</div>
-            <div class="graph-section">
-                <canvas id="moneyGraph" width="400" height="200"></canvas>
+            <div class="dashboard">
+                <div class="left-panel">
+                    <div class="money-display" id="money">$1000.00 CAD</div>
+                    <button class="button red-button" onclick="showSavings()">Savings</button>
+                </div>
+                <div class="right-panel">
+                    <canvas id="moneyGraph" width="400" height="200"></canvas>
+                </div>
             </div>
             <div class="transactions">
                 <div>Your Transactions:</div>
@@ -96,17 +118,37 @@
             </div>
         </div>
 
-        <div id="transfer" class="hidden">
+        <div id="transfer-form" class="hidden">
             <h2 style="color:red;">Transfer Funds</h2>
-            <p>Transfer your money between accounts.</p>
+            <input type="email" id="transfer-email" placeholder="Enter recipient email" /><br>
+            <button class="button" onclick="transfer()">Transfer</button>
             <button class="button" onclick="goBack()">Go Back</button>
         </div>
 
-        <div id="insert" class="hidden">
+        <div id="insert-form" class="hidden">
             <h2 style="color:red;">Insert Funds</h2>
-            <p>Insert money into your account.</p>
+            <input type="number" id="insert-amount" placeholder="Amount to insert" /><br>
+            <button class="button" onclick="confirmInsert()">Confirm</button>
             <button class="button" onclick="goBack()">Go Back</button>
         </div>
+
+        <div id="savings-page" class="hidden">
+            <div class="dashboard">
+                <div class="left-panel">
+                    <div class="money-display" id="savings-money">$800.00 CAD</div>
+                    <button class="button" onclick="showFunds()">Funds</button>
+                </div>
+                <div class="right-panel">
+                    <canvas id="savingsGraph" width="400" height="200"></canvas>
+                </div>
+            </div>
+            <div class="transactions">
+                <div>Your Transactions:</div>
+                <button class="button" onclick="showTransfer()">Transfer</button>
+                <button class="button" onclick="showInsert()">Insert</button>
+            </div>
+        </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -162,19 +204,42 @@
             });
         }
 
-        function showTransfer() {
-            document.getElementById("transfer").classList.remove("hidden");
+        function showSavings() {
             document.getElementById("dashboard").classList.add("hidden");
+            document.getElementById("savings-page").classList.remove("hidden");
+        }
+
+        function showFunds() {
+            document.getElementById("savings-page").classList.add("hidden");
+            document.getElementById("dashboard").classList.remove("hidden");
+        }
+
+        function showTransfer() {
+            document.getElementById("dashboard").classList.add("hidden");
+            document.getElementById("transfer-form").classList.remove("hidden");
         }
 
         function showInsert() {
-            document.getElementById("insert").classList.remove("hidden");
             document.getElementById("dashboard").classList.add("hidden");
+            document.getElementById("insert-form").classList.remove("hidden");
+        }
+
+        function transfer() {
+            const email = document.getElementById("transfer-email").value;
+            alert(`Transfer to ${email} initiated.`);
+            goBack();
+        }
+
+        function confirmInsert() {
+            const amount = document.getElementById("insert-amount").value;
+            alert(`Inserted $${amount} into your account.`);
+            goBack();
         }
 
         function goBack() {
-            document.getElementById("transfer").classList.add("hidden");
-            document.getElementById("insert").classList.add("hidden");
+            document.getElementById("transfer-form").classList.add("hidden");
+            document.getElementById("insert-form").classList.add("hidden");
+            document.getElementById("savings-page").classList.add("hidden");
             document.getElementById("dashboard").classList.remove("hidden");
         }
     </script>
