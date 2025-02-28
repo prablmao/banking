@@ -3,245 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #2e2e2e;
-            color: white;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .header {
-            font-size: 32px;
-            margin-bottom: 30px;
-        }
-        .button {
-            background-color: #444;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 5px;
-        }
-        .button:hover {
-            background-color: #555;
-        }
-        .red-button {
-            background-color: red;
-        }
-        .red-button:hover {
-            background-color: darkred;
-        }
-        .money-display {
-            position: absolute;
-            top: 10px;
-            left: 10%;
-            font-size: 24px;
-        }
-        .graph-section {
-            margin-top: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: absolute;
-            right: 10%;
-        }
-        .transactions {
-            margin-top: 30px;
-        }
-        .transactions button {
-            margin: 5px;
-        }
-        .hidden {
-            display: none;
-        }
-        .dashboard {
-            display: flex;
-            justify-content: space-between;
-            width: 80%;
-        }
-        .left-panel {
-            text-align: left;
-        }
-        .right-panel {
-            text-align: right;
-        }
-        .form-container {
-            margin-top: 50px;
-            text-align: center;
-        }
-    </style>
+    <title>Fake CashApp</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div class="container">
-        <div class="header">Log in or Register</div>
-        <button class="button" onclick="showLogin()">Log In</button>
-        <button class="button" onclick="showRegister()">Sign Up</button>
+        <header>
+            <h1>Fake CashApp</h1>
+        </header>
 
-        <div id="login-form" class="hidden">
-            <input type="email" id="login-email" placeholder="Email" /><br>
-            <input type="password" id="login-password" placeholder="Password" /><br>
-            <button class="button" onclick="login()">Login</button>
+        <div class="balance">
+            <p>Balance: <span id="balance">$0</span></p>
+            <button id="addMoneyButton">Add Money</button>
         </div>
 
-        <div id="register-form" class="hidden">
-            <input type="email" id="register-email" placeholder="Email" /><br>
-            <input type="password" id="register-password" placeholder="Password" /><br>
-            <button class="button" onclick="register()">Register</button>
+        <div class="transaction-section">
+            <h2>Make a Transaction</h2>
+            <input type="number" id="amount" placeholder="Enter amount">
+            <button id="transferButton">Transfer</button>
         </div>
-
-        <div id="dashboard" class="hidden">
-            <div class="dashboard">
-                <div class="left-panel">
-                    <div class="money-display" id="money">$1000.00 CAD</div>
-                    <button class="button red-button" onclick="showSavings()">Savings</button>
-                </div>
-                <div class="right-panel">
-                    <canvas id="moneyGraph" width="400" height="200"></canvas>
-                </div>
-            </div>
-            <div class="transactions">
-                <div>Your Transactions:</div>
-                <button class="button red-button" onclick="showTransfer()">Transfer</button>
-                <button class="button" onclick="showInsert()">Insert</button>
-            </div>
-        </div>
-
-        <div id="transfer-form" class="hidden">
-            <h2 style="color:red;">Transfer Funds</h2>
-            <input type="email" id="transfer-email" placeholder="Enter recipient email" /><br>
-            <button class="button" onclick="transfer()">Transfer</button>
-            <button class="button" onclick="goBack()">Go Back</button>
-        </div>
-
-        <div id="insert-form" class="hidden">
-            <h2 style="color:red;">Insert Funds</h2>
-            <input type="number" id="insert-amount" placeholder="Amount to insert" /><br>
-            <button class="button" onclick="confirmInsert()">Confirm</button>
-            <button class="button" onclick="goBack()">Go Back</button>
-        </div>
-
-        <div id="savings-page" class="hidden">
-            <div class="dashboard">
-                <div class="left-panel">
-                    <div class="money-display" id="savings-money">$800.00 CAD</div>
-                    <button class="button" onclick="showFunds()">Funds</button>
-                </div>
-                <div class="right-panel">
-                    <canvas id="savingsGraph" width="400" height="200"></canvas>
-                </div>
-            </div>
-            <div class="transactions">
-                <div>Your Transactions:</div>
-                <button class="button" onclick="showTransfer()">Transfer</button>
-                <button class="button" onclick="showInsert()">Insert</button>
-            </div>
-        </div>
-
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        function showLogin() {
-            document.getElementById("login-form").classList.remove("hidden");
-            document.getElementById("register-form").classList.add("hidden");
-        }
-
-        function showRegister() {
-            document.getElementById("register-form").classList.remove("hidden");
-            document.getElementById("login-form").classList.add("hidden");
-        }
-
-        function login() {
-            const email = document.getElementById("login-email").value;
-            const password = document.getElementById("login-password").value;
-
-            // Replace with real login logic (e.g., API call)
-            if (email && password) {
-                document.getElementById("login-form").classList.add("hidden");
-                document.getElementById("dashboard").classList.remove("hidden");
-                document.getElementById("money").innerText = "$1000.00 CAD"; // Example money
-                generateGraph();
-            }
-        }
-
-        function register() {
-            const email = document.getElementById("register-email").value;
-            const password = document.getElementById("register-password").value;
-
-            // Replace with real register logic (e.g., API call)
-            if (email && password) {
-                alert("Registration successful!");
-                document.getElementById("register-form").classList.add("hidden");
-                document.getElementById("login-form").classList.remove("hidden");
-            }
-        }
-
-        function generateGraph() {
-            const ctx = document.getElementById('moneyGraph').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-                    datasets: [{
-                        label: 'Account Balance',
-                        data: [1000, 1050, 1100, 1200, 1150],
-                        borderColor: 'rgb(75, 192, 192)',
-                        fill: false,
-                    }]
-                }
-            });
-        }
-
-        function showSavings() {
-            document.getElementById("dashboard").classList.add("hidden");
-            document.getElementById("savings-page").classList.remove("hidden");
-        }
-
-        function showFunds() {
-            document.getElementById("savings-page").classList.add("hidden");
-            document.getElementById("dashboard").classList.remove("hidden");
-        }
-
-        function showTransfer() {
-            document.getElementById("dashboard").classList.add("hidden");
-            document.getElementById("transfer-form").classList.remove("hidden");
-        }
-
-        function showInsert() {
-            document.getElementById("dashboard").classList.add("hidden");
-            document.getElementById("insert-form").classList.remove("hidden");
-        }
-
-        function transfer() {
-            const email = document.getElementById("transfer-email").value;
-            alert(`Transfer to ${email} initiated.`);
-            goBack();
-        }
-
-        function confirmInsert() {
-            const amount = document.getElementById("insert-amount").value;
-            alert(`Inserted $${amount} into your account.`);
-            goBack();
-        }
-
-        function goBack() {
-            document.getElementById("transfer-form").classList.add("hidden");
-            document.getElementById("insert-form").classList.add("hidden");
-            document.getElementById("savings-page").classList.add("hidden");
-            document.getElementById("dashboard").classList.remove("hidden");
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
